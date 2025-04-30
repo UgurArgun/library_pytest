@@ -19,4 +19,31 @@ def test_book_categories(driver):
     assert book_categories_text== "Book Categories"
     assert HomePage().book_categories_dropdown.is_enabled()
     HomePage().book_categories_dropdown.click()
+    actual_options = HomePage().get_all_dropdown_options()
+
+    expected_options = [
+        "ALL",
+        "Action and Adventure",
+        "Anthology",
+        "Classic",
+        "Comic and Graphic Novel",
+        "Crime and Detective",
+        "Drama",
+        "Fable",
+        "Fairy Tale",
+        "Fan-Fiction",
+        "Fantasy",
+        "Historical Fiction",
+        "Horror",
+        "Science Fiction",
+        "Biography/Autobiography",
+        "Humor",
+        "Romance",
+        "Short Story",
+        "Essay",
+        "Memoir",
+        "Poetry"
+    ]
+
+    assert actual_options == expected_options
 
