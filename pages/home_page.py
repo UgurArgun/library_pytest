@@ -19,3 +19,13 @@ class HomePage(BasePage):
         self.select = Select(self.dropdown)
         return [option.text for option in self.select.options]
 
+    def select_option_by_text(self, text):
+        dropdown = self.driver.find_element(*self.BOOK_CATEGORIES_DROPDOWN)
+        select = Select(dropdown)
+        select.select_by_visible_text(text)
+
+    def get_selected_option_text(self):
+        dropdown = self.driver.find_element(*self.BOOK_CATEGORIES_DROPDOWN)
+        select = Select(dropdown)
+        selected_option = select.first_selected_option
+        return selected_option.text

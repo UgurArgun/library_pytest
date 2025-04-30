@@ -47,3 +47,16 @@ def test_book_categories(driver):
 
     assert actual_options == expected_options
 
+ # Select "Poetry" option
+    HomePage().select_option_by_text("Poetry")
+    # Assert "Poetry" is selected
+
+    selected_text = HomePage().get_selected_option_text()
+    assert selected_text == "Poetry", f"Expected 'Poetry' to be selected but got '{selected_text}'"
+
+    # Select "ALL" option
+    HomePage().select_option_by_text("ALL")
+    # Assert "ALL" is selected
+    selected_text = HomePage().get_selected_option_text()
+    assert selected_text == "ALL", f"Expected 'ALL' to be selected but got '{selected_text}'"
+
