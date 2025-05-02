@@ -1,23 +1,63 @@
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from selenium.webdriver.support.ui import Select
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class HomePage(BasePage):
     BOOK_CATEGORIES_DROPDOWN = (By.ID, "book_categories")
+    ROW_ODD = (By.CSS_SELECTOR, "tr.odd[role='row']")
 
     def __init__(self):
         super().__init__()
-        self.user_profile_link = self.find_element(By.XPATH, "//a[@id='navbarDropdown']")
-        self.books_link = self.find_element(By.XPATH, "//a[@href='#books']")
-        self.book_categories = self.find_element(By.XPATH, "//label[@class='control-label col-md-4']")
-        self.book_categories_dropdown = self.find_element(By.ID, "book_categories")
+        self.wait = WebDriverWait(self.driver, 10)  # explicit wait
+
+    @property
+    def user_profile_link(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@id='navbarDropdown']")))
+
+    @property
+    def books_link(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@href='#books']")))
+
+    @property
+    def book_categories(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//label[@class='control-label col-md-4']")))
+
+    @property
+    def book_categories_dropdown(self):
+        return self.wait.until(EC.presence_of_element_located(self.BOOK_CATEGORIES_DROPDOWN))
+
+    @property
+    def search_input_box(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='search']")))
+
+    @property
+    def no_entries_found_text(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//div[@id='tbl_books_info']")))
+
+    @property
+    def borrow_book_button(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[normalize-space()='Borrow Book']")))
 
     def get_all_dropdown_options(self):
-        super().__init__()
-        self.dropdown = self.driver.find_element(*self.BOOK_CATEGORIES_DROPDOWN)
-        self.select = Select(self.dropdown)
-        return [option.text for option in self.select.options]
+        select = Select(self.book_categories_dropdown)
+        return [option.text for option in select.options]
+
+    def select_option_by_text(self, text):
+        select = Select(self.book_categories_dropdown)
+        select.select_by_visible_text(text)
+
+    def get_selected_option_text(self):
+        select = Select(self.book_categories_dropdown)
+        selected_option = select.first_selected_option
+        return selected_option.text
+
+    def get_all_cell_texts_from_odd_row(self):
+        row = self.wait.until(EC.presence_of_element_located(self.ROW_ODD))
+        cells = row.find_elements(By.TAG_NAME, "td")
+        cell_texts = [cell.text.strip() for cell in cells]
+        return cell_texts
 
     def select_option_by_text(self, text):
         dropdown = self.driver.find_element(*self.BOOK_CATEGORIES_DROPDOWN)
@@ -29,3 +69,14 @@ class HomePage(BasePage):
         select = Select(dropdown)
         selected_option = select.first_selected_option
         return selected_option.text
+
+        # Locator for the specific row (adjust if needed)
+
+    ROW_ODD = (By.CSS_SELECTOR, "tr.odd[role='row']")
+
+    def get_all_cell_texts_from_odd_row(self):
+        row = self.driver.find_element(*self.ROW_ODD)
+        cells = row.find_elements(By.TAG_NAME, "td")
+        # Extract visible text from each cell
+        cell_texts = [cell.text.strip() for cell in cells]
+        return cell_texts
