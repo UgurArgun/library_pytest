@@ -16,7 +16,9 @@ def test_borrow_books_link(driver):
     time.sleep(3)
     assert driver.current_url == "https://library1.cydeo.com/#borrowing-books", "URL is not correct"
     assert driver.title == "Library", "Page title is not correct"
-    time.sleep(5)
+    time.sleep(2)
+
+def test_return_borrow_book(driver):
     assert BorrowBooksPage().borrow_books_link.is_displayed(), "Borrowing Books link is not visible"
     assert BorrowBooksPage().borrow_books_link.is_enabled(), "Borrowing Books link is not enabled"
     BorrowBooksPage().borrow_books_link.click()
