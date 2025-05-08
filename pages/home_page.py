@@ -6,19 +6,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class HomePage(BasePage):
     BOOK_CATEGORIES_DROPDOWN = (By.ID, "book_categories")
-    ROW_ODD = (By.CSS_SELECTOR, "tr.odd[role='row']")
+    ROW = (By.CSS_SELECTOR, "tr.[role='row']")
 
     def __init__(self):
         super().__init__()
         self.wait = WebDriverWait(self.driver, 10)  # explicit wait
-
-    @property
-    def user_profile_link(self):
-        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@id='navbarDropdown']")))
-
-    @property
-    def books_link(self):
-        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@href='#books']")))
 
     @property
     def book_categories(self):
@@ -53,8 +45,8 @@ class HomePage(BasePage):
         selected_option = select.first_selected_option
         return selected_option.text
 
-    def get_all_cell_texts_from_odd_row(self):
-        row = self.wait.until(EC.presence_of_element_located(self.ROW_ODD))
+    def get_all_cell_texts_from_row(self):
+        row = self.wait.until(EC.presence_of_element_located(self.ROW))
         cells = row.find_elements(By.TAG_NAME, "td")
         cell_texts = [cell.text.strip() for cell in cells]
         return cell_texts
@@ -71,12 +63,14 @@ class HomePage(BasePage):
         return selected_option.text
 
         # Locator for the specific row (adjust if needed)
-
     ROW_ODD = (By.CSS_SELECTOR, "tr.odd[role='row']")
 
-    def get_all_cell_texts_from_odd_row(self):
-        row = self.driver.find_element(*self.ROW_ODD)
+    def get_all_cell_texts_from_row(self):
+        row = self.driver.find_element(*self.ROW)
         cells = row.find_elements(By.TAG_NAME, "td")
         # Extract visible text from each cell
         cell_texts = [cell.text.strip() for cell in cells]
         return cell_texts
+
+    def disabled_borrow_book_button(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@class='btn btn-primary btn-sm  disabled']")))

@@ -15,3 +15,9 @@ class BasePage(ABC):
 
     def find_elements(self, by: By, value: str) -> List[WebElement]:
         return self.driver.find_elements(by, value)
+
+    def user_profile_link(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@id='navbarDropdown']")))
+
+    def books_link(self):
+        return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@href='#books']")))
