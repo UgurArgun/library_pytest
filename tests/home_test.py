@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from pages.borrow_books_page import BorrowBooksPage
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 
@@ -91,7 +92,7 @@ def test_search_with_book_name(driver):
     assert HomePage().search_input_box.get_attribute("value") == "His Dark Materials"
     assert HomePage().no_entries_found_text.is_displayed()
 
-    actual_texts = HomePage().get_all_cell_texts_from_odd_row()
+    actual_texts = HomePage().get_all_cell_texts_from_row()
 
     expected_texts = [
         "Borrow Book",
@@ -119,7 +120,7 @@ def test_search_with_author_name(driver):
     sleep(2)
     assert HomePage().search_input_box.get_attribute("value") == "Ms. Tiesha Medhurst"
 
-    actual_texts = HomePage().get_all_cell_texts_from_odd_row()
+    actual_texts = HomePage().get_all_cell_texts_from_row()
 
     expected_texts = [
         "Borrow Book",
@@ -153,3 +154,16 @@ def test_search_with_category_name(driver):
     actual_text = HomePage().no_entries_found_text.text
 
     assert actual_text == expected_text, f"Expected text to be '{expected_text}' but got '{actual_text}'"
+
+
+def test_borrow_book_functionality(driver):
+    HomePage().search_input_box.send_keys("His Dark Materials")
+    time.sleep(3)
+    assert HomePage().borrow_book_button.is_enabled()
+    assert EC.element_to_be_clickable(HomePage().borrow_book_button)
+    HomePage().borrow_book_button.click()
+    time.sleep(3)
+    HomePage().search_input_box.send_keys("His Dark Materials")
+    time.sleep(5)
+    HomePage().disabled_borrow_book_button().is_displayed()
+
