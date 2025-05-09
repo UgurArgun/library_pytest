@@ -92,7 +92,7 @@ def test_search_with_book_name(driver):
     assert HomePage().search_input_box.get_attribute("value") == "His Dark Materials"
     assert HomePage().no_entries_found_text.is_displayed()
 
-    actual_texts = HomePage().get_all_cell_texts_from_odd_row()
+    actual_texts = HomePage().get_all_cell_texts_from_row()
 
     expected_texts = [
         "Borrow Book",
@@ -120,7 +120,7 @@ def test_search_with_author_name(driver):
     sleep(2)
     assert HomePage().search_input_box.get_attribute("value") == "Ms. Tiesha Medhurst"
 
-    actual_texts = HomePage().get_all_cell_texts_from_odd_row()
+    actual_texts = HomePage().get_all_cell_texts_from_row()
 
     expected_texts = [
         "Borrow Book",

@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class HomePage(BasePage):
     BOOK_CATEGORIES_DROPDOWN = (By.ID, "book_categories")
-    ROW = (By.CSS_SELECTOR, "tr.[role='row']")
+    ROW = (By.CSS_SELECTOR, "tr.odd[role='row']")
 
     def __init__(self):
         super().__init__()
@@ -65,12 +65,6 @@ class HomePage(BasePage):
         # Locator for the specific row (adjust if needed)
     ROW_ODD = (By.CSS_SELECTOR, "tr.odd[role='row']")
 
-    def get_all_cell_texts_from_row(self):
-        row = self.driver.find_element(*self.ROW)
-        cells = row.find_elements(By.TAG_NAME, "td")
-        # Extract visible text from each cell
-        cell_texts = [cell.text.strip() for cell in cells]
-        return cell_texts
 
     def disabled_borrow_book_button(self):
         return self.wait.until(EC.presence_of_element_located((By.XPATH, "//a[@class='btn btn-primary btn-sm  disabled']")))

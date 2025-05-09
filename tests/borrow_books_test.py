@@ -27,7 +27,7 @@ def test_return_borrow_book(driver):
 
     rows = table.find_elements(By.TAG_NAME, "tr")
 
-    expected_book_name = "Colobus guerza"
+    expected_book_name = "His Dark Materials"
     expected_book_state = "NOT RETURNED"
 
     matching_row = None
